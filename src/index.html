@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101018">
+<meta name="description" content="Publish draft terms, inspect ambiguity challenges and review finalized GenLayer Studionet verdicts.">
+<title>SpecLock | Review Workspace</title>
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./styles.css">
+<script type="module" src="./app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to workspace</a>
+<header class="top">
+  <div class="top-inner">
+    <a class="brand" href="#workbench"><img src="./icon.svg" alt="" width="33" height="33">SpecLock</a>
+    <nav aria-label="Workspace">
+      <a href="#workbench" data-nav="workbench">Workspace</a><a href="#challenges" data-nav="challenges">Challenges</a><a href="#activity" data-nav="activity">Activity</a><a href="#guide" data-nav="guide">Guide</a>
+    </nav>
+    <div class="top-actions"><span class="network"><i></i>Studionet</span><button class="button secondary" id="wallet" type="button">Connect wallet</button></div>
+  </div>
+</header>
+<main id="main" class="shell">
+  <section id="workbench" data-page>
+    <div class="hero">
+      <div class="hero-inner"><span class="eyebrow"><span class="violet-dot"></span> REVIEW WORKSPACE</span><h1>Settle the wording<br>before work starts.</h1><p>Publish draft terms. Let challengers show where two plausible readings lead to different outcomes.</p></div>
+      <div class="hero-art" aria-hidden="true"></div>
+      <button class="button primary" data-action="publish">＋ New spec</button>
+    </div>
+    <div class="stats" aria-label="Network summary">
+      <div class="stat"><span>Specifications</span><strong id="stat-specs">1</strong></div>
+      <div class="stat"><span>Challenges</span><strong id="stat-challenges">1</strong></div>
+      <div class="stat"><span>My credits</span><strong id="stat-credits">—</strong></div>
+      <div class="stat status-stat"><span>Contract network</span><strong><i class="violet-dot"></i> Studionet</strong></div>
+    </div>
+    <div class="section-head"><div><h2>Specification review</h2><p id="source-status" role="status">Showing the verified deployment snapshot. Connecting to Studionet…</p></div><form id="revision-lookup" class="lookup"><label class="sr-only" for="revision-id">Revision ID</label><input id="revision-id" name="id" value="1:1" placeholder="Revision ID" required pattern="[1-9][0-9]*:[1-9][0-9]*"><button class="button secondary">Load revision</button></form></div>
+    <div class="review-grid"><article class="panel" id="revision-panel" aria-live="polite"></article><aside class="panel" id="featured-panel"></aside></div>
+  </section>
+  <section id="challenges" data-page hidden>
+    <div class="page-head"><span class="eyebrow">EVIDENCE REVIEW</span><h1>Challenges</h1><p>Inspect a verdict or manage a challenge committed with your wallet.</p></div>
+    <div class="section-head"><h2>Challenge details</h2><form id="challenge-lookup" class="lookup"><label class="sr-only" for="challenge-id">Challenge ID</label><input id="challenge-id" name="id" value="1" placeholder="Challenge ID" required pattern="[1-9][0-9]*"><button class="button secondary">Load challenge</button></form></div>
+    <div class="review-grid"><article class="panel" id="challenge-panel" aria-live="polite"></article><aside class="panel" id="backup-panel"></aside></div>
+  </section>
+  <section id="activity" data-page hidden>
+    <div class="page-head"><span class="eyebrow">TRANSACTION TRACKING</span><h1>Activity</h1><p>Track transactions submitted in this browser, including those still awaiting finality.</p></div>
+    <article class="panel" id="activity-panel" aria-live="polite"></article>
+  </section>
+  <section id="guide" data-page hidden>
+    <div class="page-head"><span class="eyebrow">HOW SPECLOCK WORKS</span><h1>From draft to active terms</h1></div>
+    <div class="guide-grid">
+      <article class="panel guide-card"><span class="number">01</span><h2>Publish and accept</h2><p>The publisher freezes the first version and names a counterparty. That wallet accepts the revision.</p></article>
+      <article class="panel guide-card"><span class="number">02</span><h2>Commit and reveal</h2><p>A third wallet commits a fingerprint of its challenge. When the reveal window opens, the same wallet submits the evidence and salt.</p></article>
+      <article class="panel guide-card"><span class="number">03</span><h2>Evaluate</h2><p>Validators assess both readings of the same scenario. Confirmed ambiguity blocks the revision. An inconclusive challenge stays open for another evaluation.</p></article>
+      <article class="panel guide-card"><span class="number">04</span><h2>Revise or activate</h2><p>The publisher can propose corrected wording. An accepted latest revision can activate after review closes if there are no unresolved challenges or confirmed blockers.</p></article>
+    </div>
+    <article class="panel guide-footer"><h2>Using Studionet</h2><p>Public reads work without a wallet. To sign a write, connect an EIP-1193 wallet on chain 61999. On mobile, open the app in your wallet’s browser if your regular browser does not expose a wallet. Credits are records in the contract.</p><a class="inline" href="https://studio.genlayer.com/" target="_blank" rel="noreferrer">Open GenLayer Studio ↗</a></article>
+  </section>
+</main>
+<footer class="footer"><div class="shell footer-inner"><span>SpecLock · GenLayer Studionet</span><a id="explorer" href="https://explorer-studio.genlayer.com/address/0xd8aD83d48Ae91F5B33321775D1D1aF6f5A97FEb1" target="_blank" rel="noreferrer">Deployed contract ↗</a></div></footer>
+<dialog id="modal" aria-labelledby="dialog-title"><div class="modal-head"><h2 id="dialog-title"></h2><button class="icon-button" id="close-modal" aria-label="Close dialog">×</button></div><div id="dialog-content"></div></dialog>
+<div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>

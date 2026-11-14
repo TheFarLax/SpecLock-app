@@ -1,0 +1,101 @@
+{
+  "network": "Studionet",
+  "chain_id": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "contract_address": "0xd8aD83d48Ae91F5B33321775D1D1aF6f5A97FEb1",
+  "deploy_tx": "0xfe4bc497fce53308685af28c8298a045f0cb315692b14ef8bbc948ff6172fc9a",
+  "deploy_status": "FINALIZED",
+  "execution_result": "SUCCESS",
+  "source_matches_deployed_code": true,
+  "source_sha256": "a6b971954eeabbb5302c5fbfc6dde84ec73f7950f4611762f8057dd5f98d8f61",
+  "finalized_get_counts": {
+    "challenges": 1,
+    "specs": 1
+  },
+  "live_ai": {
+    "status": "PASSED",
+    "transactions": [
+      {
+        "method": "register_spec",
+        "tx_hash": "0xa65fdb224081851d651da9128f7c9ad712c24436045d7663ff4ada18d794129f",
+        "status": "FINALIZED",
+        "consensus": "MAJORITY_AGREE",
+        "execution_result": "SUCCESS",
+        "return_status": "return"
+      },
+      {
+        "method": "commit_challenge",
+        "tx_hash": "0xd3b83eeddfb853d2d5a0062ad05de1f4d5b8ac1fc0a0272d948f57c10c7ade71",
+        "status": "FINALIZED",
+        "consensus": "MAJORITY_AGREE",
+        "execution_result": "SUCCESS",
+        "return_status": "return"
+      },
+      {
+        "method": "accept_revision",
+        "tx_hash": "0x4886c1adb84ba515b7cdae55ba95312c9da667244f36831a8da0190322b32cc1",
+        "status": "FINALIZED",
+        "consensus": "MAJORITY_AGREE",
+        "execution_result": "SUCCESS",
+        "return_status": "return"
+      },
+      {
+        "method": "reveal_challenge",
+        "tx_hash": "0x93f9c24b8cbb315cb2a17ee31a4085e04b646b33978e53ffd8d734d7954f8249",
+        "status": "FINALIZED",
+        "consensus": "MAJORITY_AGREE",
+        "execution_result": "SUCCESS",
+        "return_status": "return"
+      },
+      {
+        "method": "evaluate_challenge",
+        "tx_hash": "0x9ac60760572116fe6a558ec2e740777b32a07c45fab60d4a05a93e72b7157db5",
+        "status": "FINALIZED",
+        "consensus": "MAJORITY_AGREE",
+        "execution_result": "SUCCESS",
+        "return_status": "return",
+        "quorum_cancellations": 1
+      }
+    ],
+    "revision_id": "1:1",
+    "challenge_id": "1",
+    "decision": "AMBIGUITY_CONFIRMED",
+    "confirmed_challenge": {
+      "attempts": 1,
+      "challenge_id": "1",
+      "challenger": "0x3a3fd084d0b8f06d399de2f9ba4a05295eb64dfb",
+      "credits_awarded": 7,
+      "digest": "b95a8a0baffba56fc59e2f8a04f85afcf532695d186b9efaca0652f541d40db6",
+      "evidence": {
+        "clause_id": "cadence",
+        "outcome_a": "The schedule complies: both weeks contain exactly two posts.",
+        "outcome_b": "The schedule fails: November 5\u201311 contains no posts.",
+        "reading_a": "A week means a fixed Monday\u2013Sunday calendar week.",
+        "reading_b": "A week means any rolling seven-day window.",
+        "scenario": "Four posts were published in UTC, on November 2, 3, 14 and 15, 2026. Assess compliance for the two full calendar weeks November 2\u20138 and 9\u201315 and for all seven-day periods wholly inside November 2\u201315."
+      },
+      "revision_id": "1:1",
+      "status": "AMBIGUITY_CONFIRMED"
+    },
+    "blocked_revision": {
+      "accepted": true,
+      "active": false,
+      "blockers": 1,
+      "clauses": {
+        "cadence": "Publish two posts per week."
+      },
+      "commit_until": 1794626776,
+      "counterparty": "0x53cff0637d950189126ebb3027b86452790831df",
+      "credits_per_clause": 7,
+      "pending": 0,
+      "publisher": "0x4f130f2d362054a7a29061590b68c5a408ef4d23",
+      "reveal_until": 1794626926,
+      "revision_id": "1:1",
+      "spec_id": "1",
+      "superseded": false,
+      "version": 1
+    },
+    "challenger_credits": 7,
+    "activation_rejection": "LOCAL_TEST_ONLY"
+  }
+}

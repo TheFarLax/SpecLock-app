@@ -9,6 +9,30 @@ export const idOK = x => typeof x === 'string' && /^[1-9]\d{0,77}$/.test(x);
 export const hashOK = x => typeof x === 'string' && /^0x[0-9a-f]{64}$/i.test(x);
 export const sameAddress = (a,b) => !!a && !!b && a.toLowerCase()===b.toLowerCase();
 const pyStrip = x => x.replace(/^[\u0009-\u000d\u001c-\u0020\u0085\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]+|[\u0009-\u000d\u001c-\u0020\u0085\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]+$/g,'');
+export function collectClauses(ids, texts) {
+  if (ids.length !== texts.length || ids.length < 1 || ids.length > 12) {
+    throw Error('Use 1 to 12 clauses.');
+  }
+  const clauses = Object.create(null);
+  let size = 0;
+  for (let i = 0; i < ids.length; i++) {
+    const id = ids[i].trim();
+    const wording = pyStrip(texts[i]);
+    if (!/^[A-Za-z0-9_-]{1,32}$/.test(id) || !wording || Object.hasOwn(clauses, id)) {
+      throw Error('Use unique clause IDs and nonempty wording.');
+    }
+    const length = Array.from(wording).length;
+    if (length > 1200) throw Error('Each clause must have at most 1200 characters.');
+    clauses[id] = wording;
+    size += length;
+  }
+  if (size > 6000) throw Error('Total wording must be 6000 characters or fewer.');
+  if (Array.from(JSON.stringify(clauses)).length > 12000) {
+    throw Error('Encoded terms exceed the contract input limit.');
+  }
+  return clauses;
+}
+
 export function cleanEvidence(input) {
   if (!input || Object.keys(input).length !== FIELDS.length) throw Error('Backup must contain exactly six evidence fields.');
   const evidence={};

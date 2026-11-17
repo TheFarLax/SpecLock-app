@@ -9,6 +9,12 @@ SpecLock is a Studionet dApp for finding ambiguous terms before they become acti
 
 A publisher and a counterparty can review and accept terms. A separate wallet can challenge them during the review period. Credits are contract records. Use test data on Studionet, since terms and revealed evidence become public.
 
+## Compare revision wording
+
+Open a revision in the workspace and select **Compare wording**. Edit a draft against the loaded revision, or select **Published revision** and enter two finalized revision IDs from the same specification. The comparison shows added, edited and removed clauses side by side and counts the unchanged clauses. A renamed clause ID appears as a removal and an addition.
+
+For a wallet-free walkthrough, load revision **1:1**, select **Try cadence example**, then **Compare changes**. The draft replaces “Publish two posts per week” with a Monday-through-Sunday cadence measured in UTC. Open challenge **1** to see why the original wording led to two outcomes. To publish a rewrite, enter the reviewed wording in the existing publication form.
+
 ## Run locally
 
 Use Node.js 22 or later and an EIP-1193 wallet for signed actions.

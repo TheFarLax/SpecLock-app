@@ -1,6 +1,7 @@
 import { createClient, abi } from 'genlayer-js';
 import { studionet } from 'genlayer-js/chains';
-import { ADDRESS, RPC, CHAIN, EXPLORER, FIELDS, addressOK, revisionOK, idOK, hashOK, sameAddress, cleanEvidence, randomSalt, commitment, phase, outcome } from './protocol.js';
+import { ADDRESS, RPC, CHAIN, EXPLORER, FIELDS, addressOK, revisionOK, idOK, hashOK, sameAddress, collectClauses, cleanEvidence, randomSalt, commitment, phase, outcome } from './protocol.js';
+import { openRevisionComparison } from './revision-compare.js';
 import deployment from './deployment.json';
 
 const $ = id => document.getElementById(id);
@@ -39,6 +40,7 @@ function renderRevision(){
     Object.entries(r.clauses||{}).map(([k,v])=>'<div class="clause"><span class="small">'+esc(k)+'</span>'+esc(v)+'</div>').join('')+
     meta([['Counterparty',accepted?'Accepted':'Awaiting acceptance'],['Confirmed blockers',r.blockers],['Commit closes',date(r.commit_until)],['Reveal closes',date(r.reveal_until)],['Unresolved challenges',r.pending],['Credits per clause',r.credits_per_clause]])+
     '<div class="actions">'+writeBtn('commit','Commit challenge',live&&!mine&&!counter&&p==='Commit open')+
+    writeBtn('compare','Compare wording')+
     (counter?writeBtn('accept','Accept revision',live&&!accepted&&!r.superseded):'')+
     (mine?writeBtn('revision','Publish revision',live&&!active&&!r.superseded):'')+
     (mine||counter?writeBtn('activate','Activate revision',live&&!r.superseded&&accepted&&!active&&now>=Number(r.reveal_until)&&!Number(r.blockers)&&!Number(r.pending)):'')+
@@ -205,7 +207,7 @@ async function write(method,args,info={}){
 }
 function clauseRow(id='',text=''){
   const row=document.createElement('div');row.className='clause-edit';
-  row.innerHTML=field('Clause ID','clause_id','required maxlength="32" pattern="[a-zA-Z0-9_\-]+" placeholder="cadence" value="'+esc(id)+'"')+area('Clause wording','clause_text',1200,text)+'<div class="actions"><button class="button quiet" type="button" data-remove>Remove clause</button></div>';
+  row.innerHTML=field('Clause ID','clause_id','required maxlength="32" pattern="[A-Za-z0-9_\\-]+" placeholder="cadence" value="'+esc(id)+'"')+area('Clause wording','clause_text',1200,text)+'<div class="actions"><button class="button quiet" type="button" data-remove>Remove clause</button></div>';
   row.querySelector('[data-remove]').onclick=()=>{if($('clause-list').children.length>1)row.remove();};
   return row;
 }
@@ -221,16 +223,7 @@ function publishForm(isRevision){
   for(const item of initial)$('clause-list').append(clauseRow(...item));
   $('add-clause').onclick=()=>{const wrap=$('clause-list');if(wrap.children.length<12){const row=clauseRow();wrap.append(row);row.querySelector('input').focus();}else toast('A spec can contain up to 12 clauses.',true);};
   bindForm(async data=>{
-    const clauses=Object.create(null), ids=data.getAll('clause_id'), texts=data.getAll('clause_text');
-    let size=0;
-    for(let i=0;i<ids.length;i++){
-      const key=ids[i].trim(), text=texts[i].trim();
-      if(!/^[A-Za-z0-9_-]{1,32}$/.test(key)||!text||key in clauses)throw Error('Use unique clause IDs and nonempty wording.');
-      clauses[key]=text;size+=Array.from(text).length;
-    }
-    if(size>6000)throw Error('Total wording must be 6000 characters or fewer.');
-    const encoded=JSON.stringify(clauses);
-    if(encoded.length>12000)throw Error('Encoded terms exceed the contract input limit.');
+    const encoded=JSON.stringify(collectClauses(data.getAll('clause_id'),data.getAll('clause_text')));
     if(isRevision){await write('publish_revision',[String(r.spec_id),encoded],{id});return;}
     const other=data.get('counterparty').trim();
     if(!addressOK(other)||sameAddress(other,state.wallet))throw Error('Enter a valid wallet different from yours.');
@@ -293,6 +286,16 @@ function confirm(title,text,method,id){
 }
 async function action(name){
   if(name==='import'){importForm();return;}
+  if(name==='compare'){
+    openRevisionComparison({
+      revision: state.revision,
+      live: state.liveRevision,
+      showDialog,
+      clauseRow,
+      readRevision: id => read('get_revision', id)
+    });
+    return;
+  }
   if(!state.wallet){await connect();if(name!=='publish')return;}
   if(state.network!==CHAIN)await connect();
   const r=state.revision,c=state.challenge;
